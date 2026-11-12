@@ -34,7 +34,7 @@ Discover installed complementary skills for this session. Scenario skills are ad
 
 ## Phase 2: Direction
 
-Read `references/direction.md`. Author `analysis/creative-brief.md`, `analysis/timing.json`, `analysis/asset-ledger.csv` and `analysis/shot-plan.md`. The plan must map each lyrical moment to symbolism, source media, shots, text cues, camera motion, VFX treatment and expected screen readability. Do not create non-existent source assets.
+Read `references/direction.md`. Author `analysis/creative-brief.md`, `analysis/timing.json`, `analysis/asset-ledger.csv` and `analysis/shot-plan.md`. Use the schema in `references/timing-example.json` and run `python3 <skill-folder>/scripts/validate_timing.py <project>/analysis/timing.json` to detect invalid intervals and references; it does not prove audio alignment. The plan must map each lyrical moment to symbolism, source media, shots, text cues, camera motion, VFX treatment and expected screen readability. Do not create non-existent source assets.
 
 ## Phase 3: Production
 
