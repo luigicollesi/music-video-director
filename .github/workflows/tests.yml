@@ -1,0 +1,19 @@
+name: Skill tests
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test Python tools
+        run: python3 -m unittest discover -s tests -v
+      - name: Validate example timing
+        run: python3 scripts/validate_timing.py references/timing-example.json
+      - name: Compile scripts
+        run: python3 -m py_compile scripts/inspect_media.py scripts/validate_timing.py
