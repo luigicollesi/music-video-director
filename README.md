@@ -1,22 +1,37 @@
 # Music Video Director
 
-A Codex-compatible skill for directing high-impact, editable music videos inside [OpenFilm](https://github.com/openfilm/openfilm). It combines the song, canonical lyrics and supplied images/footage with storyboarding, motion typography, VFX treatment, and a local review loop.
+Skill de direção e orquestração enxuta para **Agente Videomaker** (motor OpenFilm). Combina música original, letra, imagens, vídeos, efeitos e revisão audiovisual **sem criar outro editor**.
 
-**Status:** v0.1.0 — orchestration plus dependency-free media inventory and timing validators. No claim of autonomous word alignment or VFX generation yet.
+## Princípio de eficiência
 
-## Installation
+**O melhor especialista é aquele que não precisa ser chamado.** A skill tenta reutilizar o projeto e as ferramentas nativas antes de consultar uma skill complementar. Ela não carrega as dez skills do Scenario automaticamente; quando há um problema específico, seleciona no máximo uma por subtarefa, com resultado reutilizável no OpenFilm.
 
-From your OpenFilm project, install the skill for Codex:
+Leia [a matriz de encaminhamento](references/routing.md) e a [auditoria de eficiência](references/efficiency-audit.md). As economias são **hipóteses técnicas**, não percentuais medidos.
 
-```bash
-npx skills add luigicollesi/music-video-director
+## Instalação dentro da plataforma
+
+No Agente Videomaker, abra **Skills → Add from link** e use:
+
+```text
+https://github.com/luigicollesi/music-video-director
 ```
 
-If OpenFilm Desktop lists external skills as disabled, enable `music-video-director` under Settings → Agents → Codex and start a new session.
+Como alternativa, pelo comando nativo do motor:
 
-## Local requirements
+```bash
+openfilm skill add https://github.com/luigicollesi/music-video-director
+openfilm skills
+```
 
-Python 3 and FFmpeg's `ffprobe` for optional asset inventory. OpenFilm provides composition, editing and rendering. No Scenario, Remotion or paid account is required.
+A instalação pelo `npx skills add` no repositório do código-fonte é diferente da biblioteca de skills da plataforma. Prefira **Skills → Add from link** para compartilhar a skill entre projetos de vídeo. Inicie uma nova sessão do agente após instalar.
+
+## Capacidades implementadas
+
+- Direção narrativa e roteamento seletivo de habilidades para tarefas reais.
+- Inventário local com FFprobe (`scripts/inspect_media.py`), sem reconhecimento semântico das imagens.
+- Validação estrutural de marcações de letra e seções (`scripts/validate_timing.py`), **sem** alinhamento automático de áudio.
+- Referências de VFX, direção e revisão de qualidade.
+- Testes locais da orquestração e dos scripts.
 
 ```bash
 python3 -m unittest discover -s tests -v
@@ -24,16 +39,17 @@ python3 scripts/inspect_media.py /path/to/assets --output /path/to/project/analy
 python3 scripts/validate_timing.py references/timing-example.json
 ```
 
-## Planned milestones
+Requisitos dos scripts: Python 3 e FFprobe para o inventário. Ferramentas complementares podem exigir dependências extras e não são instaladas por esta skill.
 
-1. v0.1 — creative-direction protocol, quality gates, media metadata inventory and tests.
-2. v0.2 — optional local beat/onset analysis and verified lyric alignment; the timing schema and structural validator are already implemented.
-3. v0.3 — reusable cinematic VFX recipes with smoke, shatter, fire, frost and rifts (real plates/shaders).
-4. v0.4 — frame review and automated render quality reporting.
-5. v1.0 — end-to-end reproducible evaluation on a complete original music video.
+## Limites
 
-## Guardrails
+A skill não gera VFX fotorealistas automaticamente, não faz alinhamento fonético automático e não garante economia de tokens ou de tempo até haver testes A/B reais. Ela não paga por serviços, faz uploads ou utiliza o Scenario MCP sem autorização.
 
-Keep the original audio intact; don't invent lyric times; use licensed media; do not spend credits or upload files without approval; do not replace OpenFilm's native timeline; check actual renders before declaring success.
+## Próximas versões
 
-MIT licensed.
+1. Análise musical local opcional e alinhamento de letra validado.
+2. Receita de composição cinematográfica reutilizável (fogo, gelo, partículas, estilhaçamento) sem recriar a timeline.
+3. Inspeção de frames e métricas de desempenho com rastreamento de revisões.
+4. Benchmark A/B repetível comparando esta orquestração com OpenFilm nativo.
+
+Licença MIT. Projeto independente baseado no motor [OpenFilm](https://github.com/openfilm/openfilm).
