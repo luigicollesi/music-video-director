@@ -1,59 +1,41 @@
 ---
 name: music-video-director
-description: Orchestrate editable music videos in OpenFilm from an original song, lyrics, images and footage. Use for symbolic storyboards, precise lyric timing, kinetic typography, cinematic VFX planning, local-first production and render QA.
+description: Direct and refine editable music videos in Agente Videomaker (OpenFilm engine) from audio, lyrics and supplied media; selectively use local VFX, timing and QA helpers without duplicating the editor or invoking paid Scenario services.
 license: MIT
 ---
 
 # Music Video Director
 
-Direct and produce music videos with OpenFilm as the source-of-truth editor. This skill is an orchestrator, not a second video editor. Load only the reference relevant to the current phase.
+Own the *creative decisions and final integration*, not every specialist operation. Use the running Agente Videomaker/OpenFilm editor as the single timeline and render authority. Read `references/routing.md` **only when the task needs another skill**.
 
-## Production contract
+## Fast path (default)
 
-- Keep the supplied master audio unchanged unless explicitly authorized. The soundtrack sets the timeline; never infer exact timestamps from BPM.
-- Supplied lyrics are authoritative. Align words to the recording and mark uncertain timings rather than inventing them.
-- Preserve visual symbolism and focal subjects even during visually dense, extravagant sequences. Increase effects in negative space or instrumental moments.
-- Favor footage, real VFX plates, particle simulations, shaders and well-composited assets over simplistic shapes pretending to be photorealistic effects. Quality outranks effect count.
-- Keep the film editable in native `film.html` tracks and deterministic HTML shots. A shot's `window.film.frame(t)` must be reproducible for arbitrary, out-of-order times.
-- Use only authorized/licensed media. Record URLs, license, attribution and permission for each external asset.
-- Never spend credits, generate paid assets, upload private media to third parties or download copyrighted footage without explicit approval.
-- Never claim a render passed review without actually inspecting it.
+1. Determine the requested change and the actual project state. Do not repeat existing analysis, inventory, transcription, storyboard or render unless their inputs changed.
+2. Use built-in OpenFilm tools and already-produced assets first. Read its `edit` instructions only when needed; use `media` or `canvas` only for relevant tasks. Inside Desktop, use the app-provided CLI; never launch a second Studio or run `npx openfilm@latest`.
+3. Make the smallest useful change and inspect the affected interval with `openfilm look` when available. Do not render or recheck unaffected parts.
+4. If the native path is genuinely insufficient, consult **at most one complementary skill for that specific subtask**. Its output is input to the same OpenFilm project, not a new project or competing timeline.
+5. Keep a short record of chosen method, evidence, unresolved issues and reused assets. Only create full planning files when the task is full-film production or requests them.
 
-## Phase 0: Environment and available capabilities
+## Routing contract
 
-When running inside OpenFilm Desktop, use the executable/path provided by the app. Do not invoke `npx openfilm@latest`, launch a second Studio, or switch to Remotion/Scenario as the editor. Read the local OpenFilm manual and `openfilm skill edit`, `openfilm skill media`, and optionally `openfilm skill canvas`.
+- Complementary skills are **optional**. Installed is not the same as accessible, authorized, cost-free or useful.
+- Match the **requested operation**, not a keyword such as “music video.” Don't load all skills, recursively load their dependencies, or call an MCP tool just to see whether it might help.
+- Before opening another skill, identify its exact expected deliverable, the missing native capability, and whether it reuses current inputs. If none is concrete, skip it.
+- Prefer a short, relevant subsection or local script over reading an entire large skill. Never copy the specialist's whole pipeline into the main plan.
+- For a local helper, inspect its requirements and invocation before executing. Test on a small sample; avoid costly full-length conversions.
+- Scenario generation, analysis, Quality Gate, uploads and cloud editing may require connected MCP, authorization, credits or Enterprise access. No paid call or private upload without explicit consent. Offline fallback: OpenFilm/FFmpeg or report a limitation.
+- Preserve users' approved media and original music master. Supplied lyrics are authoritative; never infer verified timestamps from tempo alone.
 
-Discover installed complementary skills for this session. Scenario skills are advice until the Scenario MCP is actually connected; do not assume paid model calls are available or permitted. Prefer OpenFilm and local FFmpeg.
+## Only for a new full-length music video
 
-## Phase 1: Asset and audio intake
+- Inventory assets once using `scripts/inspect_media.py` if metadata is missing; this script uses FFprobe and **does not** understand visual content.
+- Build one compact asset ledger, section/timing map and shot plan. Consult `references/direction.md` if narrative decisions are genuinely unresolved, and `references/media-analysis.md` when timing metadata needs explanation.
+- Validate the timing structure with `scripts/validate_timing.py`. The validator cannot verify sung onsets.
+- Produce and approve a representative sequence, then reuse the visual vocabulary and existing shots. Maintain one continuous master soundtrack.
+- Read `references/effects.md` only for advanced custom treatments. Focus on cinematic footage, plates, masking, lighting and compositing rather than basic shapes presented as photorealistic VFX.
 
-- Read the user's source files and existing project's instructions. Inspect actual images and footage, not filenames alone.
-- Run `python3 <skill-folder>/scripts/inspect_media.py <assets-folder> --output <project>/analysis/media.json` when Python 3 and FFprobe are available.
-- Record each asset's shot content, symbols, rights, dimensions, orientation, duration, frame rate and usable segments. Keep original filenames intact.
-- Determine actual song duration, sections, transitions, phrasing and energy map. Match lyric cues by listening/visual inspection or validated alignment tools. A waveform is not a transcript.
+## Review and delivery
 
-## Phase 2: Direction
+Review changed shots and transitions first. For final delivery, consult `references/quality-gates.md` and inspect the *actual* output. Report measured checks separately from unverified assumptions. Preserve editable `film.html` shots and deterministic `window.film.frame(t)` behavior; use licensed media only.
 
-Read `references/direction.md`. Author `analysis/creative-brief.md`, `analysis/timing.json`, `analysis/asset-ledger.csv` and `analysis/shot-plan.md`. Use the schema in `references/timing-example.json` and run `python3 <skill-folder>/scripts/validate_timing.py <project>/analysis/timing.json` to detect invalid intervals and references; it does not prove audio alignment. The plan must map each lyrical moment to symbolism, source media, shots, text cues, camera motion, VFX treatment and expected screen readability. Do not create non-existent source assets.
-
-## Phase 3: Production
-
-Read `references/effects.md`. Establish a controlled visual vocabulary with contrasting levels of intensity. Reuse relevant assets; blend VFX with depth, lighting, masking, alpha and motion blur. Choose OpenFilm's native library, real overlay plates or local generators as appropriate. Keep text orthography correct, respect the exact sung onset and protect faces and narrative details.
-
-Build the first representative scenes and inspect them with the app-provided `openfilm look` before scaling to the full song. Iterate only on failed intervals. Keep full-length audio continuous.
-
-## Phase 4: Review and delivery
-
-Read `references/quality-gates.md`. Use `openfilm look`, FFprobe, representative frame samples, playback checks and export validation. Verify timings, lyric display, narrative consistency, legibility, missing assets, determinism, audio duration, visual artifacts and source rights. Report what was measured and what remains uncertain.
-
-Deliver an editable OpenFilm project, export if requested, source ledger, timing plan and QA report. Never state that content was rendered, generated or tested when the corresponding tool did not run.
-
-## Optional complementary skills
-
-- `scenario-kinetic-music-video`: concepts for sung-onset typography; implement locally unless Scenario use is approved.
-- `scenario-motion-loops`: local deterministic Canvas loop patterns.
-- `scenario-storyboards`, `scenario-asset-analysis`: planning and catalog patterns.
-- `scenario-quality-gate`, `scenario-refine-loop`: review patterns.
-- `scenario-video-editing`, `scenario-video-color-grade`: adapt via OpenFilm/FFmpeg first.
-- `scenario-video-assembly`: reference only; OpenFilm remains the timeline authority.
-- `scenario-seedance-music-video`: only if its service, access and spending are explicitly approved.
+**Stop condition:** if the project already satisfies the requested change and the relevant interval passes review, deliver. Do not invoke other skills to “improve” a passing result.
