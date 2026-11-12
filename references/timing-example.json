@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "audio": {
+    "path": "assets/master.wav",
+    "duration_seconds": 120
+  },
+  "sections": [
+    {
+      "id": "intro",
+      "start": 0,
+      "end": 12
+    },
+    {
+      "id": "verse-1",
+      "start": 12,
+      "end": 60
+    },
+    {
+      "id": "chorus",
+      "start": 60,
+      "end": 120
+    }
+  ],
+  "lyrics": [
+    {
+      "text": "Example lyric line",
+      "start": 12.5,
+      "end": 16.2,
+      "section": "verse-1",
+      "verified": false
+    }
+  ]
+}
